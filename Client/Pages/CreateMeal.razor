@@ -1,11 +1,126 @@
-﻿@page "/createmeal"
+﻿@page "/CreateMeal";
+@using Bard.Shared;
+@using Microsoft.AspNetCore.Components.Forms;
+@using System.ComponentModel.DataAnnotations;
+@inject NavigationManager navigationManager;
 
 <PageTitle>AI Chef - Crete Meal</PageTitle>
 
-<div class="container mt-5">
-	<h3>Create a Meal</h3>
+<div class="container mt-5 ">
+	<div class="row">
+		<div class="col">
+			<h1>Create Meal</h1>
+			<EditForm EditContext="@editContext">
+				<div class="col-12">
+					<label class="form-label">Meal Time:</label>
+					<InputSelect @bind-Value="meal.mealtime" class="form-select">
+						<option value="Breakfast">Breakfast</option>
+						<option value="Lunch">Lunch</option>
+						<option value="Dinner">Dinner</option>
+						<option value="Dessert">Dessert</option>
+					</InputSelect>
+				</div>
+				<div class="col-12">
+					<label class="form-label">Ingredients</label>
+					<InputText placeholder="Add Ingredient" maxlength="30" @bind-Value="meal.ingredient" class="form-control mb-2"></InputText>
+				</div>
+				<div class="col-12">
+					<button class="btn btn-outline-success" @onclick="AddIngredient">Add</button>
+				</div>
+					<button class="btn btn-outline-danger" @onclick="ClearIngredients">Clear</button>
+				<div class="col-12 mt-3">
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+												<th>Ingredients</th>
+								</tr>
+							</thead>
+							<tbody>
+								@* GUID = globally unique identifier *@
+								@foreach (var item in ingredients)
+								{
+									<tr>
+										<td>
+											@item.Description
+										</td>
+										<td class="text-end pe-3">
+											<button class="btn btn-outline-danger" @onclick="() => DeleteIngredient(item.Id)"><i class="bi bi-trash-fill"></i></button>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12">
+						<button class="btn btn-success rounded" @onclick="HandleSubmit">Generate</button>
+					</div>
+				</div>
+
+			</EditForm>
+			
+		</div>
+	</div>
 </div>
 
 @code {
+
+	[CascadingParameter]
+	private RecipeState? rState { get; set; }
+
+	private EditContext? editContext;
+	private List<Ingredient> ingredients = new List<Ingredient>();
+	private Meal meal = new();
+
+	protected override void OnInitialized()
+	{
+		if(rState is null)
+		{
+			navigationManager.NavigateTo("/", forceLoad: true);
+			return;
+		}
+
+		editContext = new(meal);
+
+		meal.mealtime = rState.MealTime;
+		ingredients = rState.Ingredients;
+	}
+	private class Meal {
+		public string? mealtime { get; set; }
+		public string? ingredient { get; set; }
+	}
+
+	private void AddIngredient()
+	{
+		if (!string.IsNullOrEmpty(meal.ingredient))
+		{
+			ingredients.Add(new Ingredient()
+			{
+				Id = Guid.NewGuid(),
+				Description = meal.ingredient
+			});
+		}
+		// Clears text in the input field
+		meal.ingredient = string.Empty;
+	}
+
+	private void ClearIngredients()
+	{
+		ingredients.Clear();
+		// ingredients is the list we have been adding into when we run the add function. ingredients itself is being read and displayed when new ones are being added. Essentially we are clearing all of the items and ids from the list with this function.
+	}
+
+	private void DeleteIngredient(Guid id)
+	{
+		ingredients.Remove(ingredients.First(x => x.Id == id));
+		// first loops over the array. First. X represents items that have been created. Look at the x.Id that has been clicked and make sure it matches the Guid id which is the value that is passed in for the button clicked.
+	}
+
+	private void HandleSubmit()
+	{
+		rState.MealTime = meal.mealtime;
+		rState.Ingredients = ingredients;
+		navigationManager.NavigateTo("/MealIdeas");
+	}
 
 }
