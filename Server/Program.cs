@@ -1,3 +1,4 @@
+using Bard.Server.Services;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace Bard
@@ -12,6 +13,8 @@ namespace Bard
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+            //Register our openai services.
+            builder.Services.AddScoped<IOpenAIAPI, OpenAIService>();
 
             var app = builder.Build();
 
