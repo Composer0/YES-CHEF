@@ -1,0 +1,6 @@
+﻿.generated-item {
+    background-color: orange;
+    h2, p {
+           color: black;
+       }
+}

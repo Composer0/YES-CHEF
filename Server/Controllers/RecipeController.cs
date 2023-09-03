@@ -38,7 +38,31 @@ namespace Bard.Server.Controllers
 
 			//return SampleData.RecipeIdeas;
 		}
-			//A type within a type within a type. :) ActionResult is used to return data to be displayed along with an appropriate HTTP status code. In our instance we are using it to grab List<Idea> model data to be rendered and displayed as a part of our Task
+		//A type within a type within a type. :) ActionResult is used to return data to be displayed along with an appropriate HTTP status code. In our instance we are using it to grab List<Idea> model data to be rendered and displayed as a part of our Task
 
+		[HttpPost, Route("GetRecipe")]
+		public async Task<ActionResult<Recipe?>> GetRecipe(RecipeParms recipeParms)
+		{
+			//return SampleData.Recipe;
+			List<string> ingredients = recipeParms.Ingredients
+							.Where(x => !string.IsNullOrEmpty(x.Description)).Select(XmlConfigurationExtensions => XmlConfigurationExtensions.Description!).ToList();
+
+			string? title = recipeParms.SelectedIdea;
+
+			if (string.IsNullOrEmpty(title))
+			{
+				return BadRequest();
+			}
+
+			var recipe = await _openAIService.CreateRecipe(title, ingredients);
+			return recipe;
+
+        }
+
+		[HttpGet, Route("GetRecipeImage")]
+		public async Task<RecipeImage> GetRecipeImage(string title)
+		{
+			return SampleData.RecipeImage;
+		}
 	}
 }

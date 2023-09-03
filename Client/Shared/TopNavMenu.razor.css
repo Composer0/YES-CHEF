@@ -1,3 +1,7 @@
 ﻿.topNavbg {
-    background-color: var(--bs-success-bg-subtle);
+    background-color: darkred;
 }
+
+li { font-weight: 700;}
+
+button { color: #000; border: 2px solid #000;}
