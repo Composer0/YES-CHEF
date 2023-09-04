@@ -13,7 +13,7 @@
 		<div class="list-group">
 			@foreach (var idea in ideas)
 			{
-				<button @onclick="() => GetRecipe(idea.index)" class="list-group-item list-group-action generated-item p-2">
+				<button @onclick="() => GetRecipe(idea.index)" class="animate__animated animate__flipInX list-group-item list-group-action generated-item p-2 mb-3">
 					<div class="d-flex w-100 justify-content-in-between">
 						<h2 class="mb-1 fw-bold">@idea.title</h2>
 					</div>
@@ -25,10 +25,11 @@
 } 
 else 
 {
-	<div class="container">
-		<p>Loading...</p>
+@* 	<div class="container"> *@
+		<ChefSpinner></ChefSpinner>
+		@* <p>Loading...</p> *@
 
-	</div>
+	@* </div> *@
 }
 
 @code {

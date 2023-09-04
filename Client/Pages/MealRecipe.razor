@@ -12,15 +12,15 @@
 <div class="container mt-5 h-100">
 	<div class="d-flex flex-column flex-lg-row justify-content-start">
 		<div class="text-center text-lg-start">
-			<img src="@recipeImageURL" class="rounded-3 recipeImage" />
+				<img src="@recipeImageURL" class="rounded-3 recipeImage animate__animated animate__fadeIn" />
 		</div>
-		<div class="flex-grow-1 px-3">
+			<div class="flex-grow-1 px-3 animate__animated animate__fadeInDown">
 			<h1 class="fw-bold">@recipe.title</h1>
 			<p>@recipe.summary</p>
 		</div>
 	</div>
 
-	<div class="row row-cols-1 row-cols-md-2">
+		<div class="row row-cols-1 row-cols-md-2 animate__animated animate__fadeInUp">
 		<div class="col mt-3">
 			<h2>ingredients</h2>
 				<ul>
@@ -46,9 +46,10 @@
 	</div>
 } else
 {
-	<div class="container">
-		<p>Loading...</p>
-	</div>
+	@* <div class="container"> *@
+		@* <p>Loading...</p> *@
+		<ChefSpinner></ChefSpinner>
+	@* </div> *@
 }
 
 
