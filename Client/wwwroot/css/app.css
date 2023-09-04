@@ -30,11 +30,11 @@ a, .btn-link {
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
-    border-color: #1861ac;
+    border-color: orange;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem orange, 0 0 0 0.25rem orange;
 }
 
 .content {
@@ -42,7 +42,7 @@ a, .btn-link {
 }
 
 .valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+    outline: 1px solid orange;
 }
 
 .invalid {
@@ -51,6 +51,11 @@ a, .btn-link {
 
 .validation-message {
     color: red;
+}
+
+.form-select:focus {
+    border-color: orange;
+    box-shadow: 0 0 0 0.25rem orange;
 }
 
 #blazor-error-ui {
@@ -99,9 +104,9 @@ a, .btn-link {
     }
 
         .loading-progress circle:last-child {
-            /*stroke: #1b6ec2;*/
+            /*stroke: orange;*/
             /*Possible to add bootstrap colors to color, stroke and so on */
-            stroke: var(--bs-success);
+            stroke: darkred;
             stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
             transition: stroke-dasharray 0.05s ease-in-out;
         }

@@ -5,6 +5,7 @@
 @using System.Web;
 @inject HttpClient Http;
 @inject NavigationManager Navigation;
+@inject IJSRuntime Js;
 
 @if (loaded == true)
 {
@@ -17,6 +18,9 @@
 			<div class="flex-grow-1 px-3 animate__animated animate__fadeInDown">
 			<h1 class="fw-bold">@recipe.title</h1>
 			<p>@recipe.summary</p>
+				<div class="text-end">
+					<button class="btn btn-success d-print-none" @onclick="Print">Print</button>
+				</div>
 		</div>
 	</div>
 
@@ -56,34 +60,34 @@
 
 @code {
 
-    [CascadingParameter]
-    private RecipeState? recipeState { get; set; }
-    // already defined
+	[CascadingParameter]
+	private RecipeState? recipeState { get; set; }
+	// already defined
 
 
 
-    [Parameter]
-    public int Index { get; set; }
-    bool loaded = false;
-    // ensures all data is loaded before rendrered.
+	[Parameter]
+	public int Index { get; set; }
+	bool loaded = false;
+	// ensures all data is loaded before rendrered.
 
-    private string title;
-    private string recipeImageURL = "";
-    private Recipe recipe;
+	private string title;
+	private string recipeImageURL = "";
+	private Recipe recipe;
 
-    protected override void OnInitialized()
-    {
-        loaded = false;
-        getRecipe();
-    }
+	protected override void OnInitialized()
+	{
+		loaded = false;
+		getRecipe();
+	}
 
-    private async void getRecipe()
-    {
-        string baseuri = "Recipe/GetRecipe";
+	private async void getRecipe()
+	{
+		string baseuri = "Recipe/GetRecipe";
 
-        try
-        {
-            title = recipeState.Ideas.FirstOrDefault(i => i.index == Index).title;
+		try
+		{
+			title = recipeState.Ideas.FirstOrDefault(i => i.index == Index).title;
 
 			RecipeParms recipeParms = new RecipeParms()
 				{
@@ -113,5 +117,10 @@
 		}
 
 
+	}
+
+	private async Task Print()
+	{
+		await Js.InvokeVoidAsync("printInvoke");
 	}
 }

@@ -62,7 +62,10 @@ namespace Bard.Server.Controllers
 		[HttpGet, Route("GetRecipeImage")]
 		public async Task<RecipeImage> GetRecipeImage(string title)
 		{
-			return SampleData.RecipeImage;
+			string description = "Description of the selected idea";
+			//return SampleData.RecipeImage;
+			var recipeImage = await _openAIService.CreateRecipeImage(title, description);
+			return recipeImage ?? SampleData.RecipeImage;
 		}
 	}
 }

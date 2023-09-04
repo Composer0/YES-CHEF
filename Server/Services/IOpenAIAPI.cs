@@ -9,5 +9,7 @@ namespace Bard.Server.Services
 
 		Task<Recipe?> CreateRecipe(string title, List<string> ingredients);
 
+		Task<RecipeImage?> CreateRecipeImage(string recipeTitle, string ideaDescription);
+
 	}
 }

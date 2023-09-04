@@ -253,5 +253,32 @@ namespace Bard.Server.Services
 
             return recipe?.Data;
         }
-    }
+
+		public async Task<RecipeImage?> CreateRecipeImage(string recipeTitle, string ideaDescription)
+		{
+			string url = $"{_baseURL}/images/generations";
+			string userPrompt = $"Create a restaurant product shot for {recipeTitle} based on the idea: {ideaDescription}";
+
+			ImageGenerationRequest request = new()
+			{
+				Prompt = userPrompt,
+			};
+
+			HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(url, request, _jsonOptions);
+
+			RecipeImage? recipeImage = null;
+
+			try
+			{
+				recipeImage = await httpResponse.Content.ReadFromJsonAsync<RecipeImage>();
+			}
+			catch
+			{
+				Console.WriteLine("Error: Recipe Image could not be retrieved");
+			}
+
+			return recipeImage;
+		}
+
+	}
 }
